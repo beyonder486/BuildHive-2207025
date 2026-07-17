@@ -1,0 +1,14 @@
+Project / Feature Description (BuildHive)
+A collaborative freelance marketplace where clients can post projects and hire freelancers
+Freelancers can work individually or form project teams based on client-approved collaboration requests
+Role-based team structure where each collaborator is assigned specific responsibilities (e.g., developer, designer, tester)
+Client approval system for managing and verifying team members before project participation
+Project lifecycle management with defined stages such as proposed, in progress, review, and completed
+Task-based project tracking system for breaking down work into smaller assignable units
+Task assignment and progress monitoring for individual team members
+Freelancer profiles with skills, experience, portfolio, and rating system for evaluation
+Client dashboard for monitoring project progress, teams, and task completion status
+Freelancer dashboard for tracking assigned tasks, project involvement, and performance
+Review and rating system for completed projects and individual contributors
+Notification system for project updates, collaboration requests, and task assignments
+Admin panel for managing users, projects, and platform activity
