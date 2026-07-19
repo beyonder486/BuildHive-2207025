@@ -3,90 +3,7 @@
 @section('hide_chrome')@endsection
 @section('content')
 <style>
-.auth-input {
-    width: 100%;
-    padding: 11px 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: #EEEEF3;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    outline: none;
-    transition: border-color 0.25s, background 0.25s;
-    box-sizing: border-box;
-}
-.auth-input:focus {
-    border-color: rgba(245,166,35,0.5);
-    background: rgba(245,166,35,0.03);
-}
-.auth-input::placeholder { color: #555B6E; }
-.auth-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #8A90A3;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
-.auth-btn-primary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #F5A623, #FBBF24);
-    color: #07080D;
-    font-weight: 700;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-}
-.auth-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(245,166,35,0.3);
-}
-.auth-btn-glass {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 11px 20px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #EEEEF3;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.25s, border-color 0.25s;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-.auth-btn-glass:hover {
-    background: rgba(245,166,35,0.07);
-    border-color: rgba(245,166,35,0.25);
-}
-.auth-divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 18px 0;
-}
-.auth-divider::before, .auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255,255,255,0.07);
-}
-.auth-divider span { font-size: 12px; color: #555B6E; }
+/* Page specific overrides if any */
 </style>
 
 <div style="display:flex;min-height:100vh;">
@@ -172,13 +89,13 @@
                 @csrf
 
                 <div>
-                    <label class="auth-label">Email Address</label>
-                    <input class="auth-input" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="you@example.com">
+                    <label class="form-label">Email Address</label>
+                    <input class="form-input" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="you@example.com">
                 </div>
 
                 <div>
-                    <label class="auth-label">Password</label>
-                    <input class="auth-input" type="password" name="password" required autocomplete="current-password" placeholder="Your password">
+                    <label class="form-label">Password</label>
+                    <input class="form-input" type="password" name="password" required autocomplete="current-password" placeholder="Your password">
                 </div>
 
                 <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
@@ -186,15 +103,15 @@
                     <span style="font-size:13px;color:#8A90A3;">Remember me</span>
                 </label>
 
-                <button type="submit" class="auth-btn-primary" style="margin-top:4px;">
+                <button type="submit" class="btn-primary w-full justify-center !py-3" style="margin-top:4px;">
                     Sign In
                     <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 </button>
             </form>
 
-            <div class="auth-divider"><span>or</span></div>
+            <div class="divider-text"><span>or</span></div>
 
-            <a href="{{ route('register') }}" class="auth-btn-glass">Create a Free Account</a>
+            <a href="{{ route('register') }}" class="btn-glass w-full justify-center !py-3">Create a Free Account</a>
         </div>
     </div>
 </div>
