@@ -17,16 +17,20 @@
 </head>
 <body class="min-h-screen bg-bg-primary text-text-primary antialiased">
 
-    {{-- Navigation --}}
-    @include('components.navbar')
+    {{-- Navigation (hidden on auth pages) --}}
+    @unless(View::hasSection('hide_chrome'))
+        @include('components.navbar')
+    @endunless
 
     {{-- Main Content --}}
     <main>
         @yield('content')
     </main>
 
-    {{-- Footer --}}
-    @include('components.footer')
+    {{-- Footer (hidden on auth pages) --}}
+    @unless(View::hasSection('hide_chrome'))
+        @include('components.footer')
+    @endunless
 
     {{-- Page-specific scripts --}}
     @stack('scripts')
