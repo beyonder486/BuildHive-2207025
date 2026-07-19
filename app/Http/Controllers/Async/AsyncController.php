@@ -18,7 +18,7 @@ class AsyncController extends Controller
     /** PATCH /async/tasks/{task}/status */
     public function updateTaskStatus(Request $request, Task $task)
     {
-        $request->validate(['status' => 'required|in:todo,in_progress,done']);
+        $request->validate(['status' => 'required|in:todo,in_progress,review,done']);
         $task->update(['status' => $request->status]);
         return response()->json(['success' => true, 'status' => $task->status]);
     }
@@ -127,7 +127,43 @@ class AsyncController extends Controller
 
         $task = Task::create($data);
         $task->load('assignee');
+
+        // Notify assigned freelancer
+        if (!empty($data['assigned_to'])) {
+            $project = \App\Models\Project::find($data['project_id']);
+            Notification::create([
+                'user_id'  => $data['assigned_to'],
+                'type'     => 'task_assigned',
+                'message'  => 'You have been assigned a new task: "' . $task->title . '" on project "' . $project->title . '"',
+                'url'      => route('freelancer.dashboard'),
+            ]);
+        }
+
         return response()->json(['success' => true, 'task' => $task]);
+    }
+
+    /** PATCH /async/tasks/{task}/assign */
+    public function assignTask(Request $request, Task $task)
+    {
+        if ($task->project->client_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        $data = $request->validate([
+            'assigned_to' => 'nullable|exists:users,id',
+        ]);
+        $task->update(['assigned_to' => $data['assigned_to']]);
+
+        // Notify newly assigned freelancer
+        if (!empty($data['assigned_to'])) {
+            Notification::create([
+                'user_id' => $data['assigned_to'],
+                'type'    => 'task_assigned',
+                'message' => 'You were assigned to task: "' . $task->title . '"',
+                'url'     => route('freelancer.dashboard'),
+            ]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     /** DELETE /async/tasks/{task} */
@@ -146,5 +182,29 @@ class AsyncController extends Controller
             ->take(10)
             ->get();
         return response()->json($projects);
+    }
+
+    /** PATCH /async/projects/{project}/status */
+    public function updateProjectStatus(Request $request, Project $project)
+    {
+        if ($project->client_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        $request->validate(['status' => 'required|in:open,in_progress,review,completed,cancelled']);
+        $project->update(['status' => $request->status]);
+
+        // Notify all team members
+        if ($project->team) {
+            foreach ($project->team->members as $member) {
+                Notification::create([
+                    'user_id' => $member->user_id,
+                    'type'    => 'project_status',
+                    'message' => 'Project "' . $project->title . '" status changed to ' . ucfirst(str_replace('_', ' ', $request->status)),
+                    'url'     => route('freelancer.dashboard'),
+                ]);
+            }
+        }
+
+        return response()->json(['success' => true, 'status' => $project->status]);
     }
 }

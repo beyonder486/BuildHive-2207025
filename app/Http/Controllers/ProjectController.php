@@ -21,6 +21,9 @@ class ProjectController extends Controller
         if ($request->filled('max_budget')) {
             $query->where('budget', '<=', $request->max_budget);
         }
+        if ($request->filled('skills')) {
+            $query->where('skills_required', 'like', '%' . $request->skills . '%');
+        }
 
         $projects = $query->paginate(12);
         return view('pages.projects.index', compact('projects'));
